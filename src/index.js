@@ -54,18 +54,24 @@ function Square(props) {
         xIsNext: true,
       }
     }
-
-    render() {
+    
+    handleClick(i){
       const history = this.state.history;
       const current = history[history.length - 1];
-      const winner = calculateWinner(current.squares);
-      
-      let status;
-      if (winner){
-        status = 'Winner: ' + winner;
-      } else {
-        status = 'Next Player: ' + (this.state.xIsNext ? 'X' : '0');
+      const squares = current.squares.slice()
+      if(calculateWinner(squares) || squares[i]){
+        return;
       }
+      squares[i] = this.state.xIsNext ? 'X' : 'O';
+      this.setState({
+        history: history.concat([{
+          squares: squares
+        }]),
+        xIsNext: !this.state.xIsNext,
+      });
+    }
+
+    render() {
       return (
         <div className="game">
           <div className="game-board">
